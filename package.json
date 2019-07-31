@@ -1,0 +1,22 @@
+{
+  "name": "testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "node-ssh": "^6.0.0",
+    "sftp-promises": "^1.7.0",
+    "ssh2": "^0.8.5",
+    "ssh2-sftp-client": "^2.5.0",
+    "underscore": "^1.9.1"
+  }
+}
