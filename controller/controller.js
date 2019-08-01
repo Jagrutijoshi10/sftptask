@@ -1,7 +1,7 @@
 let moment = require('moment')
 let _ = require('underscore')
 var Client = require('ssh2').Client;
-const Fs = require('fs')
+// const Fs = require('fs')
 
 var connSettings = {
     host: '172.16.4.46',
@@ -11,8 +11,8 @@ var connSettings = {
 };
 var remotePathToList = '/home/joshi/sftpfolder';
 
-function test() {
-    this.getfiles = (req, res, cb) => {
+ function test() {
+    this.getfiles = (req,res, cb ) => {
         var conn = new Client();
         conn.on('ready', function () {
             conn.sftp(function (err, sftp) {
@@ -21,33 +21,19 @@ function test() {
                     if (err) throw err;
                     // console.dir(list);
                     currentTime = 900
-                    _.each(list, (i) => {
-                        // console.log( i.attrs.atime)
-                        accessedTime = i.attrs.atime;
-                        accessedTime = moment(accessedTime).format('LTS');
-                        // console.log(accessedTime)
-                        hrs24 = convert_to_24h(accessedTime)
-                        // console.log(hrs24)
-                        totalHoursInMin = (hrs24[0] * 60) + hrs24[1];
-                        // console.log(totalHoursInMin)
-                        if (totalHoursInMin <= 900) {
-                            totalTime = currentTime - totalHoursInMin;
-                            if (totalTime >= 120) {
-                                console.log(totalTime + ' min');
-                                console.log(i);
-                                // return res.send(i);
-                            }
-                        }
-                        else {
-                            totalTime = totalHoursInMin - currentTime;
-                            return;
-                        }
-                    })
+                    // res.setHeader('Content-Type', 'application/json');
+                
+                    console.log(typeof(calc(list)))
+                //  var gan=  calc(list)
+                 res.send(calc(list))
+                
+                 
                     conn.end();
                 });
             });
         }).connect(connSettings);
     }
+
 }
 
 function convert_to_24h(time_str) {
@@ -66,5 +52,44 @@ function convert_to_24h(time_str) {
     }
     return [hours, minutes, seconds];
 };
+
+
+  function calc(list){
+    _.each(list, async (i) => {
+        try {
+            // console.log( i.attrs.atime)
+            accessedTime = i.attrs.atime;
+            accessedTime =  moment(accessedTime).format('LTS');
+            // console.log(accessedTime)
+            hrs24 =  convert_to_24h(accessedTime)
+            // console.log(hrs24)
+            totalHoursInMin =  (hrs24[0] * 60) + hrs24[1];
+            // console.log(totalHoursInMin)
+            if (totalHoursInMin <= 900) {
+               let  totalTime = currentTime - totalHoursInMin;
+                if (totalTime >= 120) {
+                    var tt = "totalTime";
+                    var value = totalTime + ' min';
+                    i.attrs[tt] = value;  
+                    console.log(i)
+                
+                }
+            else {
+                totalTime = totalHoursInMin - currentTime;  
+            }
+          
+        }
+        var data= await i;
+        return data;
+        // await cb(null, list);
+        }
+        catch (e) {
+            console.log(e)
+        }  
+    })
+  
+}
+
+
 
 module.exports = new test();

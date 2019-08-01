@@ -6,4 +6,7 @@ function router(){
         })
     }
 }
+// function(err, list){
+//     res.send(list);
+// }) 
 module.exports=new router();
