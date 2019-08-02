@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"node test.js"
+    "start": "node test.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,8 @@
     "node-ssh": "^6.0.0",
     "sftp-promises": "^1.7.0",
     "ssh2": "^0.8.5",
+    "ssh2-connect": "^2.0.5",
+    "ssh2-promise": "^0.1.5",
     "ssh2-sftp-client": "^2.5.0",
     "underscore": "^1.9.1"
   }

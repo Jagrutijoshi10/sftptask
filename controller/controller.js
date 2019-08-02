@@ -11,29 +11,24 @@ var connSettings = {
 };
 var remotePathToList = '/home/joshi/sftpfolder';
 
- function test() {
-    this.getfiles = (req,res, cb ) => {
+function test() {
+    this.getfiles = (req, res, cb) => {
         var conn = new Client();
         conn.on('ready', function () {
             conn.sftp(function (err, sftp) {
                 if (err) throw err;
-                sftp.readdir(remotePathToList, function (err, list) {
+                sftp.readdir(remotePathToList, async function (err, list) {
                     if (err) throw err;
                     // console.dir(list);
-                    currentTime = 900
                     // res.setHeader('Content-Type', 'application/json');
-                
-                    console.log(typeof(calc(list)))
-                //  var gan=  calc(list)
-                 res.send(calc(list))
-                
-                 
+                    finaldata = await calc(list)
+                    res.send(finaldata)
                     conn.end();
+                    // console.log(finaldata) ;
                 });
             });
         }).connect(connSettings);
     }
-
 }
 
 function convert_to_24h(time_str) {
@@ -54,42 +49,54 @@ function convert_to_24h(time_str) {
 };
 
 
-  function calc(list){
-    _.each(list, async (i) => {
+function calc(log) {
+    let newarr = []
+    currentTime = moment().format('LTS')
+    //  console.log(currentTime)
+    crt = convert_to_24h(currentTime)
+    _.each(log, (i) => {
         try {
             // console.log( i.attrs.atime)
             accessedTime = i.attrs.atime;
-            accessedTime =  moment(accessedTime).format('LTS');
             // console.log(accessedTime)
-            hrs24 =  convert_to_24h(accessedTime)
+            at = moment.unix(accessedTime).format('LTS');
+            // console.log(at)
+            hrs24 = convert_to_24h(at)
             // console.log(hrs24)
-            totalHoursInMin =  (hrs24[0] * 60) + hrs24[1];
-            // console.log(totalHoursInMin)
-            if (totalHoursInMin <= 900) {
-               let  totalTime = currentTime - totalHoursInMin;
-                if (totalTime >= 120) {
-                    var tt = "totalTime";
-                    var value = totalTime + ' min';
-                    i.attrs[tt] = value;  
-                    console.log(i)
-                
-                }
-            else {
-                totalTime = totalHoursInMin - currentTime;  
+            totalHoursInMinaccessedTime = (hrs24[0] * 60) + hrs24[1];
+            currentTime = (crt[0] * 60) + crt[1];
+            // console.log({ct:currentTime})
+            // console.log({at:totalHoursInMinaccessedTime})
+            if (totalHoursInMinaccessedTime <= currentTime) {
+                totalTime = currentTime - totalHoursInMinaccessedTime;
+                //   console.log({tt:totalTime})
             }
-          
-        }
-        var data= await i;
-        return data;
-        // await cb(null, list);
+            else {
+                totalTime = totalHoursInMinaccessedTime - currentTime;
+                //   console.log({tt:totalTime})
+            }
+            if (totalTime >= 120) {
+                var tt = "totalTime";
+                var value = totalTime + ' min';
+                i.attrs[tt] = value;
+
+                newarr.push(i)
+                // console.log(newarr)
+            }
+            else {
+                var tt = "totalTime";
+                var value = totalTime + ' min';
+                i.attrs[tt] = value;
+                // console.log(i)
+                return false;
+            }
+            // await cb(null, list);
         }
         catch (e) {
             console.log(e)
-        }  
+        }
+
     })
-  
-}
-
-
-
+    return newarr;
+};
 module.exports = new test();
