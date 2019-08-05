@@ -1,3 +1,4 @@
+"use strict";
 const cont=require('../controller/controller.js')
 function router(){
     this.config=(test)=>{
@@ -10,3 +11,6 @@ function router(){
 //     res.send(list);
 // }) 
 module.exports=new router();
+
+
+// TODO: try using module.exports = function(){};
