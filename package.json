@@ -14,12 +14,7 @@
     "express": "^4.17.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "node-ssh": "^6.0.0",
-    "sftp-promises": "^1.7.0",
     "ssh2": "^0.8.5",
-    "ssh2-connect": "^2.0.5",
-    "ssh2-promise": "^0.1.5",
-    "ssh2-sftp-client": "^2.5.0",
     "underscore": "^1.9.1"
   }
 }
