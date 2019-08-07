@@ -8,7 +8,7 @@ let Client = require('ssh2').Client;
 // const Fs = require('fs')
 
 // TODO: move this to config.json with env as local and prod.eg: {local:{},prod:{}}
-function test() {
+module.exports=function() {
     this.getfiles = (req, res) => {
         let conn = new Client();
         conn.on('ready', function () {
@@ -87,4 +87,4 @@ function test() {
     }
 
 };
-module.exports = new test();
+// module.exports = new test();
