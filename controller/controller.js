@@ -8,8 +8,9 @@ let Client = require('ssh2').Client;
 // const Fs = require('fs')
 
 // TODO: move this to config.json with env as local and prod.eg: {local:{},prod:{}}
-module.exports=function() {
-    this.getfiles = (req, res) => {
+module.exports= function() {
+    var self= {};
+    self.getfiles = (req, res) => {
         let conn = new Client();
         conn.on('ready', function () {
             conn.sftp(function (err, sftp) {
@@ -18,20 +19,24 @@ module.exports=function() {
                     if (err) throw err;
                     // console.dir(list);
                     let finaldata = await calc(list);
-                    res.send(finaldata);
+                    res.send(finaldata); 
                     conn.end();
+                   
                     // console.log(finaldata) ;
                 });
             });
         }).connect(configure.environment.local.connSettings);
     }
-}
+    return self;
+}();
 
  function calc(log) {
+    //  log=log.attrs;
+    //  console.log(log)
      let isAbouve2hrs=false;
     // let newarr = [];
     let ct = moment().format('k:mm');
-    console.log(ct)
+    // console.log(ct)
     let currentTime = moment.duration(ct).asMinutes();
     // console.log(currentTime);
     _.each(log, (i) => {
@@ -69,7 +74,7 @@ module.exports=function() {
                 let value2=isAbouve2hrs;
                 i.attrs[flag]=value2
                 // await newarr.push(i);
-                console.log(i);
+                // console.log(i);
             }
             // await cb(null, list);
         }
@@ -87,4 +92,3 @@ module.exports=function() {
     }
 
 };
-// module.exports = new test();
