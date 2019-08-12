@@ -1,9 +1,10 @@
 "use strict";
-let moment = require('moment');
-let _ = require('underscore');
-let configure = require('../config/config.json');
+const moment = require('moment');
+moment.suppressDeprecationWarnings = true;
+const _ = require('underscore');
+const configure = require('../config/config.json');
 let remotePathToList = '/home/joshi/sftpfolder/';
-let Client = require('ssh2').Client;
+const Client = require('ssh2').Client;
 
 
 // TODO: move this to config.json with env as local and prod.eg: {local:{},prod:{}}
@@ -39,22 +40,19 @@ function calc(log) {
         try {
             let age = moment.unix(i.attrs.atime).format('LLL');
             // console.log(age);
-            if (age <= currentTime) {
+            if (currentTime) {
                 var longAge = moment(currentTime).diff(age, 'minutes');
-            }
-            else {
-                var longAge = moment(age).diff(currentTime, 'minutes');
             }
             // console.log(longAge);
             if (longAge >= 120) {
                 isAbouve2hrs = true;
-                var data = _.extend({ i }, { "currentTime": currentTime, "age": age, "longAge": longAge + ' min', "isAbouve2hrs": isAbouve2hrs });
+                var data = _.extend(i, { "currentTime": currentTime, "age": age, "longAge": longAge + ' min', "isAbouve2hrs": isAbouve2hrs });
                 newarr.push(data);
                 // await newarr.push(i);
             }
             else {
                 isAbouve2hrs = false;
-                var data = _.extend({ i }, { "currentTime": currentTime, "age": age, "longAge": longAge + ' min', "isAbouve2hrs": isAbouve2hrs });
+                var data = _.extend(i, { "currentTime": currentTime, "age": age, "longAge": longAge + ' min', "isAbouve2hrs": isAbouve2hrs });
                 newarr.push(data);
             }
             // await cb(null, list);

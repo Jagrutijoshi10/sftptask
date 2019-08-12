@@ -4,15 +4,21 @@ const express = require('express'),
     test = express(),
     router1 = require('./router/router.js'),
     testing = process.env.testing;
-    // console.log(process.env);
-    console.log("testing:",testing);
+// console.log(process.env);
+require('dotenv').config();
 
+
+console.log("testing:", testing);
 test.use('/api', router1);
-test.use((err,req,res,next) => {
-   if(err) throw err;
-});
-test.listen(3000)
+test.listen(3000);
 module.exports = test;
+
+
+
+
+// test.use((err) => {
+//     if(err) throw err;
+//  });
 
 // test.use('/api',cors,router1)
 
@@ -20,9 +26,6 @@ module.exports = test;
 
 // cors =new cors();
 // []
-
-
-
 
 // try{
 //     if(!err){

@@ -1,7 +1,7 @@
 "use strict";
-const express = require('express');
-const router = express.Router();
-const ctrl = require('../controller/controller');
+const express = require('express'),
+    router = express.Router(),
+    ctrl = require('../controller/controller');
 router.get('/data', (req, res) => {
     ctrl.getfiles(req, res);
 })
