@@ -10,7 +10,6 @@ module.exports = router;
 
 
 
-
 // function(err, list){
 //     res.send(list);
 // }) 

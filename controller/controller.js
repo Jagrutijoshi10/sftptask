@@ -30,8 +30,6 @@ module.exports = function () {
 }();
 
 function calc(log) {
-    //  log=log.attrs;
-    //  console.log(log)
     let isAbouve2hrs = false;
     let newarr = [];
     let currentTime = moment().format('LLL');
