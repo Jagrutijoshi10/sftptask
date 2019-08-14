@@ -8,11 +8,4 @@ router.get('/data', (req, res) => {
 module.exports = router;
 
 
-
-
-// function(err, list){
-//     res.send(list);
-// }) 
-
-
 // TODO: try using module.exports = function(){};

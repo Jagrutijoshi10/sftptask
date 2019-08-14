@@ -4,7 +4,6 @@
 process.on('uncaughtException', function (err) {
     console.error('global exception:', err.message);
 })
-
 const express = require('express'),
     test = express(),
     router1 = require('./router/router.js'),
@@ -17,13 +16,14 @@ require('dotenv').config();
 test.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 })
-// test.on(event : 'error',onerror)
-//  function onerror(error){
-//     if(error.syscall!=='listen'){
-//             throw error;
-//     }
-//  }
 
+test.on('error',onerror)
+ 
+function onerror(error){
+    if(error.syscall!=='listen'){
+            throw error;
+    }
+ }
 
 test.use('/api', router1);
 module.exports = test;
